@@ -1,0 +1,92 @@
+package IA;
+import java.util.Scanner;
+class Nodo {
+    int valor;
+    Nodo izquierda;
+    Nodo derecha;
+
+    Nodo(int valor) {
+        this.valor = valor;
+        izquierda = null;
+        derecha = null;
+    }
+}
+
+class Arbol {
+    Nodo raiz;
+
+    boolean vacio() {
+        return raiz == null;
+    }
+
+    void insertar(int valor) {
+        raiz = insertarRecursivo(raiz, valor);
+    }
+
+    private Nodo insertarRecursivo(Nodo nodo, int valor) {
+        if (nodo == null) {
+            return new Nodo(valor);
+        }
+
+        if (valor < nodo.valor) {
+            nodo.izquierda = insertarRecursivo(nodo.izquierda, valor);
+        } else {
+            nodo.derecha = insertarRecursivo(nodo.derecha, valor);
+        }
+
+        return nodo;
+    }
+
+    void imprimirArbol() {
+        imprimirRecursivo(raiz);
+    }
+
+    private void imprimirRecursivo(Nodo nodo) {
+        if (nodo != null) {
+            imprimirRecursivo(nodo.izquierda);
+            System.out.println(nodo.valor);
+            imprimirRecursivo(nodo.derecha);
+        }
+    }
+
+    Nodo buscarNodo(int valor) {
+        return buscarRecursivo(raiz, valor);
+    }
+
+    private Nodo buscarRecursivo(Nodo nodo, int valor) {
+        if (nodo == null || nodo.valor == valor) {
+            return nodo;
+        }
+
+        if (valor < nodo.valor) {
+            return buscarRecursivo(nodo.izquierda, valor);
+        } else {
+            return buscarRecursivo(nodo.derecha, valor);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Arbol arbol = new Arbol();
+        arbol.insertar(5);
+        arbol.insertar(3);
+        arbol.insertar(7);
+        arbol.insertar(2);
+        arbol.insertar(4);
+        arbol.insertar(6);
+        arbol.insertar(8);
+
+        System.out.println("Arbol:");
+        arbol.imprimirArbol();
+        Scanner leer = new Scanner(System.in);
+        System.out.println("Ingresa cualquier número");
+        int valorBuscado = leer.nextInt();
+        Nodo nodoEncontrado = arbol.buscarNodo(valorBuscado);
+        if (nodoEncontrado != null) {
+            System.out.println("El nodo con valor " + valorBuscado + " fue encontrado.");
+        } else {
+            System.out.println("El nodo con valor " + valorBuscado + " no fue encontrado.");
+        }
+    }
+}
